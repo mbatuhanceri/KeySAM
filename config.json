@@ -1,0 +1,24 @@
+{
+  "input": {
+    "video_path": "D:\\CPP_PROJECTS\\keypoint-sam-pipeline\\input\\2.mp4"
+  },
+  "models": {
+    "yolov8_model_path": "D:\\CPP_PROJECTS\\keypoint-sam-pipeline\\models\\yolov8n-pose-simplified.onnx",
+    "sam2_model_path": "D:\\CPP_PROJECTS\\keypoint-sam-pipeline\\models\\sam2.1_l.pt"
+  },
+  "output": {
+    "output_path": "D:\\CPP_PROJECTS\\keypoint-sam-pipeline\\output\\output.mp4",
+    "show_keypoints": true,
+    "show_bounding_boxes": true
+  },
+  "processing": {
+    "confidence_threshold": 0.5,
+    "nms_threshold": 0.4,
+    "max_detections": 100
+  },
+  "visualization": {
+    "mask_alpha": 0.6,
+    "keypoint_radius": 3,
+    "line_thickness": 2
+  }
+}
