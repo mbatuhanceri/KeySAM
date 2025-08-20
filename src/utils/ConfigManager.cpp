@@ -65,6 +65,5 @@ void ConfigManager::printConfig() const {
     std::cout << "Config File: " << configFilePath.string() << std::endl;
     std::cout << "Input Video: " << getVideoPath() << std::endl;
     std::cout << "YOLOv8 Model: " << getYoloModelPath() << std::endl;
-    // Diğer ayarları da buraya ekleyebilirsiniz.
     std::cout << "============================" << std::endl;
 }
