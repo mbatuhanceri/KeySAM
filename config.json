@@ -3,7 +3,7 @@
     "video_path": "D:\\CPP_PROJECTS\\keypoint-sam-pipeline\\input\\2.mp4"
   },
   "models": {
-    "yolov8_model_path": "D:\\CPP_PROJECTS\\keypoint-sam-pipeline\\models\\yolov8n-pose-simplified.onnx",
+    "yolov8_model_path": "D:\\CPP_PROJECTS\\libtorch-segmentation\\weights\\yolo11m-pose.torchscript",
     "sam2_model_path": "D:\\CPP_PROJECTS\\keypoint-sam-pipeline\\models\\sam2.1_l.pt"
   },
   "output": {

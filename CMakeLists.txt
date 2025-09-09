@@ -40,6 +40,20 @@ add_executable(libtorch_segmentation
         src/main.cpp
         src/utils/ConfigManager.cpp
         src/utils/ConfigManager.h
+        src/models/IModel.cpp
+        src/models/IModel.h
+        src/models/PoseModel.cpp
+        src/models/PoseModel.h
+        src/modelProcessors/PoseModelProcessor.cpp
+        src/modelProcessors/PoseModelProcessor.h
+        src/pipelines/HumanSegmenterPipeline.cpp
+        src/pipelines/HumanSegmenterPipeline.h
+        src/pipelines/IPipeline.cpp
+        src/pipelines/IPipeline.h
+        src/utils/VideoUtils.cpp
+        src/utils/VideoUtils.h
+        src/utils/CVUtils.cpp
+        src/utils/CVUtils.h
 )
 
 # Kütüphaneleri bağla
