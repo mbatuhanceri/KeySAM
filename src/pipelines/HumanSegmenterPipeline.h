@@ -3,17 +3,20 @@
 #include <string>
 #include "IPipeline.h"
 #include "../modelProcessors/PoseModelProcessor.h"
+#include "../utils/VideoUtils.h"
+
 
 class HumanSegmenterPipeline : public IPipeline{
-	public:
+public:
 	HumanSegmenterPipeline(const std::string inputVideoPath, const std::string outputVideoPath) : inputVideoPath(inputVideoPath),
 		outputVideoPath(outputVideoPath) {
-		poseModelProcessor = new PoseModelProcessor();
-
+		videoUtils = new VideoUtils();
+		poseModelProcessor = new PoseModelProcessor(videoUtils, 640, 640);	//todo. get frame details from config
 		run();
 	};
 
-	private:
+private:
+	VideoUtils* videoUtils;
 	PoseModelProcessor* poseModelProcessor = nullptr;
 	std::string inputVideoPath;
 	std::string outputVideoPath;

@@ -54,6 +54,8 @@ add_executable(libtorch_segmentation
         src/utils/VideoUtils.h
         src/utils/CVUtils.cpp
         src/utils/CVUtils.h
+        src/utils/TensorUtils.cpp
+        src/utils/TensorUtils.h
 )
 
 # Kütüphaneleri bağla

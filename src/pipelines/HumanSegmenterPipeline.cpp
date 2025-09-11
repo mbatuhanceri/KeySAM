@@ -6,19 +6,13 @@
 
 void HumanSegmenterPipeline::run() {
 
-	// videoyu aç
-	VideoUtils videoUtils;
-	CVUtils cvUtils;
-	videoUtils.openVideo(this->inputVideoPath);
+	this->videoUtils->openVideo(this->inputVideoPath);
+
+	while (this->videoUtils->readFrame()) {
+		this->poseModelProcessor->doPredict();
 
 
-	// while (videodan frame al)
-	cv::Mat frame;
-	while (videoUtils.readFrame(frame)) {
-
-
-		// Posedetection modeline sok pointleri al
-
+		CVUtils::showFrame(this->videoUtils->preprocessedFrame, 1);	//opsiyonel
 	}
 
 }

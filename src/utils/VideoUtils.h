@@ -7,6 +7,9 @@
 
 class VideoUtils {
 public:
+	cv::Mat current_frame;
+	cv::Mat preprocessedFrame;
+
 	VideoUtils() {};
 	~VideoUtils() {
 		close();
@@ -35,13 +38,13 @@ public:
 		}
 	}
 
-	bool readFrame(cv::Mat& frame) {
+	bool readFrame() {
 		if (!cap_.isOpened()) {
 			return false;
 		}
 
-		cap_ >> frame;
-		return !frame.empty();
+		cap_ >> this->current_frame;
+		return !this->current_frame.empty();
 	}
 
 	bool hasNextFrame() {
@@ -60,7 +63,6 @@ public:
 
 private:
 	cv::VideoCapture cap_;
-	cv::Mat frame;
 
 };
 
