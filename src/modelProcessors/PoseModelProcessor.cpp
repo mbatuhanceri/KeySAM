@@ -16,13 +16,16 @@ void PoseModelProcessor::doPredict() {
 	std::cout << "output" <<  this->modelOutput.sizes() << std::endl;
 
 
-	int batch_size = output.size(0);
-	int num_channels = output.size(1); // 56
-	int num_detections = output.size(2);
+//	output = output.to(torch::kCPU);
+//	int batch_size = output.size(0);
+//	int num_channels = output.size(1); // 56
+//	int num_detections = output.size(2);
+//
+//	std::cout << "Batch: " << batch_size
+//			  << ", Channels: " << num_channels
+//			  << ", Detections: " << num_detections << std::endl;
 
-	std::cout << "Batch: " << batch_size
-			  << ", Channels: " << num_channels
-			  << ", Detections: " << num_detections << std::endl;
+}
 
 void PoseModelProcessor::processDetections() {
 	float conf_threshold = 0.5;	//todo. must taken from config
