@@ -13,8 +13,8 @@ void HumanSegmenterPipeline::run() {
 		this->poseModelProcessor->processDetections();
 
 
-		CVUtils::showFrame(this->videoUtils->preprocessedFrame, 1);	//opsiyonel
-		std::cout << counter++ << std::endl;
+		CVUtils::showFrame(this->videoUtils->overlayedFrame, 1);	//opsiyonel
+		//std::cout << counter++ << std::endl;
 	}
 
 }

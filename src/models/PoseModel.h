@@ -37,7 +37,7 @@ class PoseModel : public IModel {
 
 
 	private:
-	std::string model_path = "D:\\uzumaki_AI\\yolov8s-pose.torchscript";	//todo config' den alınmalı
+	std::string model_path = "D:\\uzumaki_AI\\yolo11x-pose.torchscript";	//todo config' den alınmalı
 	torch::Device device =  torch::kCUDA;
 
 };

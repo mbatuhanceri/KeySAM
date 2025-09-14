@@ -9,6 +9,7 @@ class VideoUtils {
 public:
 	cv::Mat current_frame;
 	cv::Mat preprocessedFrame;
+	cv::Mat overlayedFrame;
 
 	VideoUtils() {};
 	~VideoUtils() {
@@ -59,6 +60,14 @@ public:
 			return true;
 		}
 		return false;
+	}
+
+	float getVideoWidth() {
+		return cap_.get((cv::CAP_PROP_FRAME_WIDTH));
+	}
+
+	float getVideoHeight() {
+		return cap_.get((cv::CAP_PROP_FRAME_HEIGHT));
 	}
 
 private:

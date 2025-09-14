@@ -1,13 +1,12 @@
 #pragma once
 #include "../models/PoseModel.h"
 #include "../utils/TensorUtils.h"
+#include "../utils/VideoUtils.h"
+#include "../utils/CVUtils.h"
 
 #include <torch/torch.h>
 #include <torch/script.h>
 #include <torchvision/ops/nms.h>
-
-#include "../utils/VideoUtils.h"
-#include "../utils/CVUtils.h"
 
 
 class PoseModelProcessor {
@@ -19,9 +18,9 @@ private:
 	};
 
 	struct Person {
-		float x, y, width, height;  // bounding box
-		float confidence;           // detection confidence
-		std::vector<KeyPoint> keypoints;  // 17 keypoints for COCO pose
+		float x, y, width, height;
+		float confidence;
+		std::vector<KeyPoint> keypoints;
 	};
 
 public:
@@ -33,15 +32,13 @@ public:
 
 	void doPredict();
 	void processDetections();
+	void drawPoseDetections(const std::vector<Person>& finalDetections);
 
 private:
 	VideoUtils* videoUtils;
 	PoseModel* poseModel;
 
 	torch::Tensor modelOutput;
-
 	int frameWidth, frameHeight;
-
-
 
 };

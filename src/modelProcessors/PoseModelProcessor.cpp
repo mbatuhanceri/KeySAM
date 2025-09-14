@@ -9,21 +9,9 @@ void PoseModelProcessor::doPredict() {
 	CVUtils::cvtColor(this->videoUtils->preprocessedFrame, this->videoUtils->preprocessedFrame);
 
 	std::vector<torch::jit::IValue> inputs = TensorUtils::prepareImageForPredict(this->videoUtils->preprocessedFrame);
-	std::cout << inputs[0].toTensor().sizes() << std::endl;
 
 	// predict
 	this->modelOutput = this->poseModel->model_->forward(inputs).toTensor().to(torch::kCPU);
-	std::cout << "output" <<  this->modelOutput.sizes() << std::endl;
-
-
-//	output = output.to(torch::kCPU);
-//	int batch_size = output.size(0);
-//	int num_channels = output.size(1); // 56
-//	int num_detections = output.size(2);
-//
-//	std::cout << "Batch: " << batch_size
-//			  << ", Channels: " << num_channels
-//			  << ", Detections: " << num_detections << std::endl;
 
 }
 
@@ -76,7 +64,7 @@ void PoseModelProcessor::processDetections() {
 	}
 
 	if (detections.empty()) {
-		std::cout << "Hic insan bulunamadı" << std::endl;
+		std::cout << "No person detected!" << std::endl;
 		return;
 	}
 
@@ -93,5 +81,92 @@ void PoseModelProcessor::processDetections() {
 		finalDetections.push_back(detections[idx]);
 	}
 
-	std::cout << finalDetections.size() << " insan tespit edildi" << std::endl;
+	std::cout << finalDetections.size() << " person detected" << std::endl;
+
+	if (true) {	// will be taken from configs ( if(configs.getInstance().getDebugMode == true) {} )
+		this->drawPoseDetections(std::ref(finalDetections));
+	}
+}
+
+void PoseModelProcessor::drawPoseDetections(const std::vector<Person>& finalDetections) {
+	this->videoUtils->overlayedFrame = this->videoUtils->current_frame.clone();
+
+		// COCO pose keypoint connections (17 keypoints için)
+		std::vector<std::pair<int, int>> pose_connections = {
+			{0, 1}, {0, 2}, {1, 3}, {2, 4},     // Head
+			{5, 6}, {5, 7}, {7, 9}, {6, 8}, {8, 10},  // Arms
+			{5, 11}, {6, 12}, {11, 12},         // Torso
+			{11, 13}, {13, 15}, {12, 14}, {14, 16}  // Legs
+		};
+
+		std::vector<cv::Scalar> keypoint_colors = {
+			cv::Scalar(0, 0, 255),    // 0: nose - red
+			cv::Scalar(255, 0, 0),    // 1: left_eye - blue
+			cv::Scalar(0, 255, 0),    // 2: right_eye - green
+			cv::Scalar(255, 255, 0),  // 3: left_ear - cyan
+			cv::Scalar(255, 0, 255),  // 4: right_ear - magenta
+			cv::Scalar(0, 255, 255),  // 5: left_shoulder - yellow
+			cv::Scalar(128, 0, 128),  // 6: right_shoulder - purple
+			cv::Scalar(255, 128, 0),  // 7: left_elbow - orange
+			cv::Scalar(0, 128, 255),  // 8: right_elbow - light blue
+			cv::Scalar(128, 255, 0),  // 9: left_wrist - lime
+			cv::Scalar(255, 0, 128),  // 10: right_wrist - pink
+			cv::Scalar(64, 128, 255), // 11: left_hip - light orange
+			cv::Scalar(255, 64, 128), // 12: right_hip - light pink
+			cv::Scalar(128, 255, 128), // 13: left_knee - light green
+			cv::Scalar(255, 128, 128), // 14: right_knee - light red
+			cv::Scalar(64, 255, 255), // 15: left_ankle - light cyan
+			cv::Scalar(255, 255, 64)  // 16: right_ankle - light yellow
+		};
+
+		float keypoint_conf_threshold = 0.3f; // Keypoint confidence threshold
+
+		float scaleWidth = this->videoUtils->getVideoWidth() / this->frameWidth;
+		float scaleHeight = this->videoUtils->getVideoHeight() / this->frameHeight;
+		std::cout << scaleWidth <<  " - " << scaleHeight << std::endl;
+
+	    for (const auto& person : finalDetections) {
+	        // Bounding box çiz
+//	        cv::Rect bbox(person.x - person.width/2, person.y - person.height/2,
+//	                     person.width, person.height);
+//	        cv::rectangle(this->videoUtils->overlayedFrame, bbox, cv::Scalar(0, 255, 0), 2);
+//
+//	        // Confidence skorunu yaz
+//	        std::string conf_text = "Person: " + std::to_string(person.confidence).substr(0, 4);
+//	        cv::putText(this->videoUtils->overlayedFrame, conf_text,
+//	                   cv::Point(bbox.x, bbox.y - 10), cv::FONT_HERSHEY_SIMPLEX, 0.5,
+//	                   cv::Scalar(0, 255, 0), 1);
+
+	        for (const auto& connection : pose_connections) {
+	            int idx1 = connection.first;
+	            int idx2 = connection.second;
+
+	            if (idx1 < person.keypoints.size() && idx2 < person.keypoints.size()) {
+	                const auto& kp1 = person.keypoints[idx1];
+	                const auto& kp2 = person.keypoints[idx2];
+
+	                // Her iki keypoint de yeterli confidence'a sahipse çizgi çiz
+	                if (kp1.confidence > keypoint_conf_threshold &&
+	                    kp2.confidence > keypoint_conf_threshold) {
+	                    cv::line(this->videoUtils->overlayedFrame,
+	                            cv::Point(static_cast<int>(kp1.x * scaleWidth), static_cast<int>(kp1.y * scaleHeight)),
+	                            cv::Point(static_cast<int>(kp2.x * scaleWidth), static_cast<int>(kp2.y * scaleHeight)),
+	                            cv::Scalar(255, 255, 255), 2);
+	                }
+	            }
+	        }
+
+	        for (int i = 0; i < person.keypoints.size() && i < keypoint_colors.size(); i++) {
+	            const auto& kp = person.keypoints[i];
+
+	            if (kp.confidence > keypoint_conf_threshold) {
+	                cv::Point center(static_cast<int>(kp.x * scaleWidth), static_cast<int>(kp.y * scaleHeight));
+
+	                cv::circle(this->videoUtils->overlayedFrame, center, 5, keypoint_colors[i], -1);
+	                cv::putText(this->videoUtils->overlayedFrame, std::to_string(i),
+	                           cv::Point(center.x + 7, center.y - 7), cv::FONT_HERSHEY_SIMPLEX,
+	                           0.3, cv::Scalar(255, 255, 255), 1);
+	            }
+	        }
+	    }
 }
