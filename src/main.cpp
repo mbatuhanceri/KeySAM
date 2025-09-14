@@ -10,4 +10,5 @@ int main() {
 	// Pipeline Create
 	HumanSegmenterPipeline humanSegmenterPipeline(inputVideoPath, outputVideoPath);
 	std::cin >> inputVideoPath;
+	return 7;
 }
