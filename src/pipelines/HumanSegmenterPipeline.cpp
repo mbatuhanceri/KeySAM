@@ -11,8 +11,8 @@ void HumanSegmenterPipeline::run() {
 		this->poseModelProcessor->doPredict();
 		this->poseModelProcessor->processDetections();
 
-		this->samModelProcessor->doPredict();
-		this->samModelProcessor->processDetections();
+		//this->samModelProcessor->doPredict();
+		//this->samModelProcessor->processDetections();
 
 
 		CVUtils::showFrame(this->videoUtils->overlayedFrame, 1);	//opsiyonel
