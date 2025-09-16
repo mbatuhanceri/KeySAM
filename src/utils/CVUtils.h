@@ -15,12 +15,16 @@ public:
 		cv::waitKey(delay);		// 0 = wait
 	}
 
-	static void resizeMat(cv::Mat& frame, cv::Mat& targetFrame, int width, int height) {
+	static void resizeMat(const cv::Mat& frame, cv::Mat& targetFrame, int width, int height) {
 		cv::resize(frame, targetFrame, cv::Size(width, height), cv::INTER_LINEAR);
 	}
 
-	static void cvtColor(cv::Mat& frame, cv::Mat& targetFrame) {
+	static void cvtColor(const cv::Mat& frame, cv::Mat& targetFrame) {
 		cv::cvtColor(frame, targetFrame, cv::COLOR_BGR2RGB);
+	}
+
+	static void converTo32f(const cv::Mat& frame, cv::Mat& targetFrame) {
+		frame.convertTo(targetFrame, CV_32FC3);
 	}
 
 };

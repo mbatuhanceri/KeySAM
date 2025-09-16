@@ -62,12 +62,12 @@ public:
 		return false;
 	}
 
-	float getVideoWidth() {
-		return cap_.get((cv::CAP_PROP_FRAME_WIDTH));
+	int getVideoWidth() {
+		return static_cast<int>(cap_.get((cv::CAP_PROP_FRAME_WIDTH)));
 	}
 
-	float getVideoHeight() {
-		return cap_.get((cv::CAP_PROP_FRAME_HEIGHT));
+	int getVideoHeight() {
+		return static_cast<int>(cap_.get((cv::CAP_PROP_FRAME_HEIGHT)));
 	}
 
 private:

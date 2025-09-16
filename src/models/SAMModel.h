@@ -12,27 +12,27 @@
 using torch::indexing::Slice;
 using torch::indexing::None;
 
-
-class PoseModel : public IModel {
-	public:
-	torch::jit::Module* model_ = nullptr;
-
-	PoseModel() {
+class SAMModel : public IModel {
+public:
+	SAMModel() {
 		load();
 	}
-	~PoseModel() {
+
+	~SAMModel() {
 		delete model_;
 		model_ = nullptr;
 	}
 
+	torch::jit::Module* model_ = nullptr;
+
 	void load() override;
 
 	std::string getName() override {
-		return "PoseModel";
+		return "SAMModel";
 	}
 
 
 private:
 	torch::Device device =  torch::kCUDA;
-
 };
+

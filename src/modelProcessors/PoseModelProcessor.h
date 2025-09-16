@@ -1,28 +1,10 @@
 #pragma once
-#include "../models/PoseModel.h"
-#include "../utils/TensorUtils.h"
-#include "../utils/VideoUtils.h"
-#include "../utils/CVUtils.h"
 
-#include <torch/torch.h>
-#include <torch/script.h>
-#include <torchvision/ops/nms.h>
+#include "IModelProcessors.h"
 
 
-class PoseModelProcessor {
-private:
-	struct KeyPoint {
-		float x;
-		float y;
-		float confidence;
-	};
 
-	struct Person {
-		float x, y, width, height;
-		float confidence;
-		std::vector<KeyPoint> keypoints;
-	};
-
+class PoseModelProcessor : public IModelProcessors{
 public:
 	PoseModelProcessor(VideoUtils* videoUtils, int frameWidth, int frameHeight) : videoUtils(videoUtils), frameWidth(frameWidth),
 		frameHeight(frameHeight) {
@@ -30,15 +12,15 @@ public:
 		std::cout << poseModel->getName() << " model is loaded!" << std::endl;
 	}
 
-	void doPredict();
-	void processDetections();
+	void doPredict() override;
+	void processDetections() override;
 	void drawPoseDetections(const std::vector<Person>& finalDetections);
+
 
 private:
 	VideoUtils* videoUtils;
 	PoseModel* poseModel;
 
-	torch::Tensor modelOutput;
 	int frameWidth, frameHeight;
 
 };

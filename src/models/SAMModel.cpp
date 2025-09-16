@@ -1,13 +1,11 @@
 
-#include "PoseModel.h"
+#include "SAMModel.h"
 #include <string>
 #include <filesystem>
 
-
-void PoseModel::load() {
+void SAMModel::load() {
 	try {
-		//Todo. config instance oluşturulmalı
-		std::string weightsPath = "D:\\uzumaki_AI\\yolo11x-pose.torchscript";
+		std::string weightsPath = "D:\\uzumaki_AI\\sam_encoder_huge.pt";
 		if (!std::filesystem::exists(weightsPath)) {
 			std::cerr << "Model file not found: " << weightsPath << std::endl;
 			return;
@@ -16,7 +14,9 @@ void PoseModel::load() {
 		this->model_->eval();
 		this->model_->to(device, torch::kFloat32);
 
-	} catch (std::exception &e) {
+	}
+	catch (std::exception &e) {
 		std::cerr << e.what() << std::endl;
 	}
+
 }

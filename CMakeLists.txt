@@ -47,6 +47,12 @@ add_executable(libtorch_segmentation
         src/utils/CVUtils.h
         src/utils/TensorUtils.cpp
         src/utils/TensorUtils.h
+        src/modelProcessors/SAMModelProcessor.cpp
+        src/modelProcessors/SAMModelProcessor.h
+        src/models/SAMModel.cpp
+        src/models/SAMModel.h
+        src/modelProcessors/IModelProcessors.h
+        src/utils/MathUtils.h
 )
 
 target_include_directories(libtorch_segmentation PRIVATE

@@ -7,10 +7,12 @@
 void HumanSegmenterPipeline::run() {
 	this->videoUtils->openVideo(this->inputVideoPath);
 
-	int counter = 0;
 	while (this->videoUtils->readFrame()) {
 		this->poseModelProcessor->doPredict();
 		this->poseModelProcessor->processDetections();
+
+		this->samModelProcessor->doPredict();
+		this->samModelProcessor->processDetections();
 
 
 		CVUtils::showFrame(this->videoUtils->overlayedFrame, 1);	//opsiyonel
