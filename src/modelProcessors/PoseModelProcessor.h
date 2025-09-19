@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IModelProcessors.h"
-
+#include "../models/PoseModel.h"
 
 
 class PoseModelProcessor : public IModelProcessors{
@@ -22,5 +22,6 @@ private:
 	PoseModel* poseModel;
 
 	int frameWidth, frameHeight;
+	std::vector<Person> finalDetections;
 
 };

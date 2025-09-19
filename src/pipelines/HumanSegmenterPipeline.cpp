@@ -10,8 +10,8 @@ void HumanSegmenterPipeline::run() {
 	while (this->videoUtils->readFrame()) {
 		this->poseModelProcessor->doPredict();
 		this->poseModelProcessor->processDetections();
-
-		//this->samModelProcessor->doPredict();
+		this->samModelProcessor->poseDetections = this->poseModelProcessor->poseDetections;
+		this->samModelProcessor->doPredict();
 		//this->samModelProcessor->processDetections();
 
 

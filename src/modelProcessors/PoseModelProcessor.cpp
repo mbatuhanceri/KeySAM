@@ -70,7 +70,7 @@ void PoseModelProcessor::processDetections() {
 	// torchvision::ops::nms -> keep indices
 	auto keep = vision::ops::nms(boxes, scores, nms_threshold);
 
-	std::vector<Person> finalDetections;
+	finalDetections.clear();
 	for (int i = 0; i < keep.size(0); i++) {
 		int idx = keep[i].item<int>();
 		finalDetections.push_back(detections[idx]);

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../models/PoseModel.h"
+
 #include "../utils/TensorUtils.h"
 #include "../utils/VideoUtils.h"
 #include "../utils/MathUtils.h"

@@ -10,7 +10,7 @@
 #include <torch/script.h>
 #include <torchvision/ops/nms.h>
 
-class SAMModelProcessor{
+class SAMModelProcessor : public IModelProcessors{
 public:
 	SAMModelProcessor(VideoUtils* videoUtils, int frameWidth, int frameHeight) :videoUtils(videoUtils),
 		frameWidth(frameWidth), frameHeight(frameHeight) {
@@ -18,8 +18,8 @@ public:
 		std::cout << samModel->getName() << " model is loaded!" << std::endl;
 	}
 
-	void doPredict();
-	void processDetections();
+	void doPredict() override;
+	void processDetections() override;
 	void drawPoseDetections();
 
 private:
